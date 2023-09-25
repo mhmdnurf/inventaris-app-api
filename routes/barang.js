@@ -1,20 +1,17 @@
-const express = require("express");
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import { Barang } from "../models/Barang.js";
 const router = express.Router();
-const BarangModel = require("../models/BarangModel");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const { Sequelize } = require("sequelize");
-
 router.use(cors());
 router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: false }));
 
-router.get("/", async (req, res) => {
+router.get("/master-barang", async (req, res) => {
+  const allBarang = await Barang.find();
   try {
-    const barang = await BarangModel.findAll();
     res.status(200).json({
       message: "Data Barang berhasil diambil!",
-      barang: barang,
+      barang: allBarang,
     });
   } catch (error) {
     res.status(500).json({
@@ -24,4 +21,4 @@ router.get("/", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

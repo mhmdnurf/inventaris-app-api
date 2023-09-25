@@ -1,10 +1,21 @@
-const express = require("express");
-const mongoose = require("mongoose");
+import express from "express";
+import mongoose from "mongoose";
+import barangEndpoint from "./routes/barang.js";
+import bahanEndpoint from "./routes/bahan.js";
+import kategoriEndpoint from "./routes/kategori.js";
+import satuanEndpoint from "./routes/satuan.js";
 
 const app = express();
 const port = 3000;
 
 const mongoURI = "mongodb://127.0.0.1:27017/db_inventaris";
+
+const endpoints = [
+  barangEndpoint,
+  bahanEndpoint,
+  kategoriEndpoint,
+  satuanEndpoint,
+];
 
 mongoose
   .connect(mongoURI, {
@@ -17,6 +28,10 @@ mongoose
   .catch((err) => {
     console.log("Failed to connect to Mongoose");
   });
+
+endpoints.map((endpoint) => {
+  app.use("/api", endpoint);
+});
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
