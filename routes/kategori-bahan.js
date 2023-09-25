@@ -11,22 +11,22 @@ router.get("/kategori-bahan", async (req, res) => {
   const allKategori = await KategoriBahan.find();
   try {
     res.status(200).json({
-      message: "Berhasil mengambil data kategori",
+      message: "Berhasil mengambil data",
       data: allKategori,
     });
   } catch (err) {
     res.status(500).json({
-      message: "Terjadi kesalahan dalam mengambil data kategori",
+      message: "Terjadi kesalahan server",
       error: err.message,
     });
   }
 });
 
 router.post("/kategori-bahan/create", async (req, res) => {
-  const newKategori = new KategoriBahan({ ...req.body });
+  const addKategori = new KategoriBahan({ ...req.body });
 
   const existingKategori = await KategoriBahan.findOne({
-    nama_kategori: { $regex: new RegExp(newKategori.nama_kategori, "i") },
+    nama_kategori: { $regex: new RegExp(addKategori.nama_kategori, "i") },
   });
   if (existingKategori) {
     return res.status(400).json({
@@ -35,14 +35,75 @@ router.post("/kategori-bahan/create", async (req, res) => {
   }
 
   try {
-    const addKategori = await newKategori.save();
+    const newKategori = await addKategori.save();
     res.status(201).json({
-      message: "Data kategori bahan berhasil ditambahkan",
-      data: addKategori,
+      message: "Data berhasil ditambahkan",
+      data: newKategori,
     });
   } catch (err) {
     res.status(400).json({
       message: "Validasi gagal, data gagal ditambahkan",
+      error: err.message,
+    });
+  }
+});
+
+router.put("/kategori-bahan/edit/:id", async (req, res) => {
+  const id = req.params.id;
+  if (!id) {
+    return res.status(400).json({
+      message: "ID tidak boleh kosong",
+    });
+  }
+
+  const existingKategoriBahan = await KategoriBahan.findOne({
+    nama_kategori: { $regex: new RegExp(req.body.nama_kategori, "i") },
+    _id: { $ne: id },
+  });
+  if (existingKategoriBahan) {
+    return res.status(400).json({
+      message: "Nama kategori sudah digunakan",
+    });
+  }
+
+  const editKategoriBahan = await KategoriBahan.findById(id);
+  if (!editKategoriBahan) {
+    return res.status(404).json({
+      message: "Data tidak ditemukan",
+    });
+  }
+
+  editKategoriBahan.nama_kategori = req.body.nama_kategori;
+  try {
+    const updatedKategoriBahan = await editKategoriBahan.save();
+    res.status(200).json({
+      message: "Data berhasil diubah",
+      data: updatedKategoriBahan,
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: "Validasi gagal, data gagal diubah",
+      error: err.message,
+    });
+  }
+});
+
+router.delete("/kategori-bahan/delete/:id", async (req, res) => {
+  const id = req.params.id;
+  if (!id) {
+    return res.status(400).json({
+      message: "ID tidak boleh kosong",
+    });
+  }
+
+  try {
+    await KategoriBahan.deleteOne({ _id: id });
+    res.status(200).json({
+      message: "Data berhasil dihapus",
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Terjadi kesalahan server",
       error: err.message,
     });
   }

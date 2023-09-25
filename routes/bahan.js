@@ -23,12 +23,12 @@ router.get("/master-bahan", async (req, res) => {
 });
 
 router.post("/master-bahan/create", async (req, res) => {
-  const newBahan = new Bahan({ ...req.body });
+  const addBahan = new Bahan({ ...req.body });
   try {
-    const addBahan = await newBahan.save();
+    const newBahan = await addBahan.save();
     res.status(201).json({
       message: "Data bahan berhasil ditambahkan",
-      data: addBahan,
+      data: newBahan,
     });
   } catch (err) {
     res.status(400).json({
