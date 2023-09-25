@@ -2,17 +2,16 @@ import mongoose from "mongoose";
 
 const SatuanSchema = mongoose.Schema(
   {
-    kode_satuan: {
-      type: String,
-      required: true,
-    },
     nama_satuan: {
       type: String,
       required: true,
     },
+    keterangan: {
+      type: String,
+    },
   },
   {
-    collection: "master-satuan",
+    collection: "satuan",
   }
 );
 

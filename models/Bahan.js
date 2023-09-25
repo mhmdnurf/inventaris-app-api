@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 const BahanSchema = mongoose.Schema(
   {
@@ -10,12 +10,14 @@ const BahanSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    kategori: {
-      type: String,
+    kategori_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "KategoriBahan",
       required: true,
     },
-    satuan: {
-      type: String,
+    satuan_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Satuan",
       required: true,
     },
   },

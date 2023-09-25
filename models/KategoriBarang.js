@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const KategoriSchema = mongoose.Schema(
+const KategoriBarangSchema = mongoose.Schema(
   {
     kode_kategori: {
       type: String,
@@ -12,10 +12,10 @@ const KategoriSchema = mongoose.Schema(
     },
   },
   {
-    collection: "master-kategori",
+    collection: "kategori-barang",
   }
 );
 
-const Kategori = mongoose.model("Kategori", KategoriSchema);
+const KategoriBarang = mongoose.model("KategoriBarang", KategoriBarangSchema);
 
-export { Kategori };
+export { KategoriBarang };
