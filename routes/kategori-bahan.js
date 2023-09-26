@@ -50,6 +50,8 @@ router.post("/kategori-bahan/create", async (req, res) => {
 
 router.put("/kategori-bahan/edit/:id", async (req, res) => {
   const id = req.params.id;
+  const { nama_kategori, keterangan } = req.body;
+
   if (!id) {
     return res.status(400).json({
       message: "ID tidak boleh kosong",
@@ -73,7 +75,9 @@ router.put("/kategori-bahan/edit/:id", async (req, res) => {
     });
   }
 
-  editKategoriBahan.nama_kategori = req.body.nama_kategori;
+  editKategoriBahan.nama_kategori = nama_kategori;
+  editKategoriBahan.keterangan = keterangan;
+
   try {
     const updatedKategoriBahan = await editKategoriBahan.save();
     res.status(200).json({

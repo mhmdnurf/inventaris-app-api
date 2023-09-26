@@ -49,6 +49,8 @@ router.post("/satuan/create", async (req, res) => {
 
 router.put("/satuan/edit/:id", async (req, res) => {
   const id = req.params.id;
+  const { nama_satuan, keterangan } = req.body;
+
   if (!id) {
     return res.status(400).json({
       message: "ID tidak boleh kosong",
@@ -72,7 +74,9 @@ router.put("/satuan/edit/:id", async (req, res) => {
     });
   }
 
-  editSatuan.nama_satuan = req.body.nama_satuan;
+  editSatuan.nama_satuan = nama_satuan;
+  editSatuan.keterangan = keterangan;
+
   try {
     const updatedSatuan = await editSatuan.save();
     res.status(200).json({

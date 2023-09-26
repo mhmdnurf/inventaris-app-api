@@ -10,7 +10,7 @@ router.get("/master-barang", async (req, res) => {
   const allBarang = await Barang.find();
   try {
     res.status(200).json({
-      message: "Data Barang berhasil diambil!",
+      message: "Berhasil mengambil data",
       barang: allBarang,
     });
   } catch (error) {
