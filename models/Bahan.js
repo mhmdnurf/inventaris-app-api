@@ -2,10 +2,6 @@ import mongoose, { mongo } from "mongoose";
 
 const BahanSchema = mongoose.Schema(
   {
-    kodeBahan: {
-      type: String,
-      required: true,
-    },
     namaBahan: {
       type: String,
       required: true,
@@ -15,7 +11,7 @@ const BahanSchema = mongoose.Schema(
       ref: "KategoriBahan",
       required: true,
     },
-    satuan: {
+    satuanBahan: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Satuan",
       required: true,

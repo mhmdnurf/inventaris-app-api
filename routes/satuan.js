@@ -49,7 +49,7 @@ router.post("/satuan/create", async (req, res) => {
 
 router.put("/satuan/edit/:id", async (req, res) => {
   const id = req.params.id;
-  const { nama_satuan, keterangan } = req.body;
+  const { namaSatuan, keterangan } = req.body;
 
   if (!id) {
     return res.status(400).json({
@@ -58,7 +58,7 @@ router.put("/satuan/edit/:id", async (req, res) => {
   }
 
   const existingSatuan = await Satuan.findOne({
-    nama_satuan: { $regex: new RegExp(req.body.nama_satuan, "i") },
+    namaSatuan: { $regex: new RegExp(req.body.namaSatuan, "i") },
     _id: { $ne: id },
   });
   if (existingSatuan) {
@@ -74,7 +74,7 @@ router.put("/satuan/edit/:id", async (req, res) => {
     });
   }
 
-  editSatuan.nama_satuan = nama_satuan;
+  editSatuan.namaSatuan = namaSatuan;
   editSatuan.keterangan = keterangan;
 
   try {
