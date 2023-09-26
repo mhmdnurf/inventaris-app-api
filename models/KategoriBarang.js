@@ -2,13 +2,12 @@ import mongoose from "mongoose";
 
 const KategoriBarangSchema = mongoose.Schema(
   {
-    kode_kategori: {
+    namaKategori: {
       type: String,
       required: true,
     },
-    nama_kategori: {
+    keterangan: {
       type: String,
-      required: true,
     },
   },
   {

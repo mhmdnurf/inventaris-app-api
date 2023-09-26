@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const KategoriBahanSchema = mongoose.Schema(
   {
-    nama_kategori: {
+    namaKategori: {
       type: String,
       required: true,
     },

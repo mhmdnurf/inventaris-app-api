@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const SatuanSchema = mongoose.Schema(
   {
-    nama_satuan: {
+    namaSatuan: {
       type: String,
       required: true,
     },
