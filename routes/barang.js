@@ -17,10 +17,10 @@ router.get("/master-barang", async (req, res) => {
       message: "Berhasil mengambil data",
       data: allBarang,
     });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
       message: "Terjadi kesalahan dalam mengambil data barang",
-      error: error.message,
+      error: err.message,
     });
   }
 });

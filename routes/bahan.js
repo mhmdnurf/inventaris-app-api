@@ -16,12 +16,12 @@ router.get("/master-bahan", async (req, res) => {
   try {
     res.status(200).json({
       message: "Berhasil mengambil data",
-      data: allBahan,
+      allBahan,
     });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
       message: "Terjadi kesalahan server",
-      error: error.message,
+      error: err.message,
     });
   }
 });

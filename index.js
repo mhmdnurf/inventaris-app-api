@@ -32,7 +32,10 @@ mongoose
     console.log("Connected to Mongoose");
   })
   .catch((err) => {
-    console.log("Failed to connect to Mongoose");
+    console.log({
+      message: "Failed to connect to Mongoose",
+      error: err.message,
+    });
   });
 
 endpoints.map((endpoint) => {
