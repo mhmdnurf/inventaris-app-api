@@ -5,6 +5,9 @@ import { Barang } from "../models/Barang.js";
 const router = express.Router();
 router.use(cors());
 router.use(bodyParser.json());
+import puppeteer from "puppeteer";
+import fs from "fs";
+import path from "path";
 
 router.get("/master-barang", async (req, res) => {
   const allBarang = await Barang.find();
@@ -107,6 +110,75 @@ router.delete("/master-barang/delete/:id", async (req, res) => {
   } catch (err) {
     res.status(500).json({
       message: "Terjadi kesalahan server",
+      error: err.message,
+    });
+  }
+});
+
+router.get("/master-barang/report", async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+
+    const allBarang = await Barang.find({
+      createdAt: {
+        $gte: start,
+        $lte: end,
+      },
+    });
+
+    let rows = "";
+    let headerTable = "";
+    let counter = 1;
+    for (let barang of allBarang) {
+      let date = new Date(barang.createdAt);
+      let formattedDate = `${date.getDate()}/${
+        date.getMonth() + 1
+      }/${date.getFullYear()}`;
+
+      let startDateFormat = new Date(startDate).toLocaleDateString("id-ID");
+      let endDateFormat = new Date(endDate).toLocaleDateString("id-ID");
+
+      headerTable += `    <tr>
+  <td colspan="5" class="text-center font-semibold">Periode Laporan: ${startDateFormat} - ${endDateFormat}</td>
+</tr>`;
+
+      rows += `
+        <tr class="border">
+          <td class="text-center">${counter++}</td>
+          <td class="text-center">${barang.namaBarang}</td>
+          <td class="text-center">${barang.jumlah}</td>
+          <td class="text-center">${barang.satuan}</td>
+          <td class="text-center">${formattedDate}</td>
+        </tr>
+      `;
+    }
+
+    let html = fs.readFileSync(
+      path.resolve("../html/report-barang.html"),
+      "utf8"
+    );
+    html = html.replace("{{rows}}", rows);
+    html = html.replace("{{headerTable}}", headerTable);
+
+    const browser = await puppeteer.launch({ headless: "new" });
+    const page = await browser.newPage();
+    await page.setContent(html);
+    const pdf = await page.pdf({ format: "A4" });
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Length": pdf.length,
+    });
+    res.send(pdf);
+
+    await browser.close();
+  } catch (err) {
+    res.status(500).json({
+      message: "Terjadi kesalahan dalam membuat laporan",
       error: err.message,
     });
   }

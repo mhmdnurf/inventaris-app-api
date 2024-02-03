@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <title>Laporan</title>
+  </head>
+  <body>
+    <div class="container mx-auto">
+      <div class="text-center p-4 font-semibold">
+        <h1 class="text-2xl">Laporan Data Barang</h1>
+        <h1 class="text-lg">Lilio Coffee Garden</h1>
+      </div>
+      <div>{{headerTable}}</div>
+      <table class="table-auto w-full mt-4">
+        <thead>
+          <tr
+            class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal border"
+          >
+            <th class="py-3 px-2 text-center">No.</th>
+            <th class="py-3 px-6 text-center">Nama Barang</th>
+            <th class="py-3 px-6 text-center">Jumlah</th>
+            <th class="py-3 px-6 text-center">Satuan</th>
+            <th class="py-3 px-6 text-center">Tanggal Input</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-600 text-sm font-light">
+          {{rows}}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
