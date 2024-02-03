@@ -2,44 +2,48 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { Bahan } from "../models/Bahan.js";
-import { KategoriBahan } from "../models/KategoriBahan.js";
-import { Satuan } from "../models/Satuan.js";
-
 const router = express.Router();
 router.use(cors());
 router.use(bodyParser.json());
 
 router.get("/master-bahan", async (req, res) => {
-  const allBahan = await Bahan.find()
-    .populate("kategoriBahan")
-    .populate("satuanBahan");
+  const allBahan = await Bahan.find();
   try {
     res.status(200).json({
       message: "Berhasil mengambil data",
-      allBahan,
+      data: allBahan,
     });
   } catch (err) {
     res.status(500).json({
-      message: "Terjadi kesalahan server",
+      message: "Terjadi kesalahan dalam mengambil data bahan",
       error: err.message,
     });
   }
 });
 
 router.post("/master-bahan/create", async (req, res) => {
-  const kategoriBahan = await KategoriBahan.findById(req.body.kategoriBahan);
-  const satuanBahan = await Satuan.findById(req.body.satuanBahan);
-  const addBahan = new Bahan({
-    ...req.body,
-    kategoriBahan: kategoriBahan,
-    satuanBahan: satuanBahan,
+  const { namaBahan, jumlah, satuan } = req.body;
+
+  const existingBahan = await Bahan.findOne({
+    namaBahan,
+  });
+  if (existingBahan) {
+    return res.status(400).json({
+      message: "Nama bahan sudah digunakan",
+    });
+  }
+
+  const addbahan = new Bahan({
+    namaBahan,
+    jumlah,
+    satuan,
   });
 
   try {
-    const newBahan = await addBahan.save();
+    const newbahan = await addbahan.save();
     res.status(201).json({
       message: "Data berhasil ditambahkan",
-      data: newBahan,
+      data: newbahan,
     });
   } catch (err) {
     res.status(400).json({
@@ -51,7 +55,7 @@ router.post("/master-bahan/create", async (req, res) => {
 
 router.put("/master-bahan/edit/:id", async (req, res) => {
   const id = req.params.id;
-  const { namaBahan } = req.body;
+  const { namaBahan, satuan, jumlah } = req.body;
 
   if (!id) {
     return res.status(400).json({
@@ -69,22 +73,15 @@ router.put("/master-bahan/edit/:id", async (req, res) => {
     });
   }
 
-  const editBahan = await Bahan.findById(id)
-    .populate("kategoriBahan")
-    .populate("satuanBahan");
-  if (!editBahan) {
-    return res.status(404).json({
-      message: "Data tidak ditemukan",
-    });
-  }
-
-  editBahan.namaBahan = namaBahan;
-
   try {
-    const updatedBahan = await editBahan.save();
+    const updatedbahan = await Bahan.findByIdAndUpdate(
+      id,
+      { namaBahan, satuan, jumlah },
+      { new: true }
+    );
     res.status(200).json({
       message: "Data berhasil diubah",
-      data: updatedBahan,
+      data: updatedbahan,
     });
   } catch (err) {
     res.status(400).json({

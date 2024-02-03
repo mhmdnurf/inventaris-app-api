@@ -1,20 +1,23 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const BahanSchema = mongoose.Schema(
   {
     namaBahan: {
       type: String,
       required: true,
+      unique: true,
     },
-    kategoriBahan: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "KategoriBahan",
+    jumlah: {
+      type: Number,
       required: true,
     },
-    satuanBahan: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Satuan",
+    satuan: {
+      type: String,
       required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
     },
   },
   {

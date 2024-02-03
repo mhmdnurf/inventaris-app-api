@@ -1,13 +1,18 @@
 import mongoose from "mongoose";
 
-const BarangSchema = mongoose.Schema(
+const BarangKeluarSchema = mongoose.Schema(
   {
     namaBarang: {
       type: String,
       required: true,
       unique: true,
     },
-    jumlah: {
+    barang_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Barang",
+      required: true,
+    },
+    jumlahKeluar: {
       type: Number,
       required: true,
     },
@@ -21,10 +26,10 @@ const BarangSchema = mongoose.Schema(
     },
   },
   {
-    collection: "master-barang",
+    collection: "barang-masuk",
   }
 );
 
-const Barang = mongoose.model("Barang", BarangSchema);
+const BarangKeluar = mongoose.model("BarangKeluar", BarangKeluarSchema);
 
-export { Barang };
+export { BarangKeluar };
