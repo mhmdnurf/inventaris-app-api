@@ -4,6 +4,8 @@ import barangEndpoint from "./routes/barang.js";
 import bahanEndpoint from "./routes/bahan.js";
 import barangMasukEndpoint from "./routes/barangMasuk.js";
 import barangKeluarEndpoint from "./routes/barangKeluar.js";
+import bahanMasukEndpoint from "./routes/bahanMasuk.js";
+import bahanKeluarEndpoint from "./routes/bahanKeluar.js";
 
 const app = express();
 const port = 3000;
@@ -15,6 +17,8 @@ const endpoints = [
   barangMasukEndpoint,
   barangKeluarEndpoint,
   bahanEndpoint,
+  bahanMasukEndpoint,
+  bahanKeluarEndpoint,
 ];
 
 mongoose

@@ -8,6 +8,12 @@ router.use(bodyParser.json());
 import puppeteer from "puppeteer";
 import fs from "fs";
 import path from "path";
+import TelegramBot from "node-telegram-bot-api";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
 
 router.get("/master-bahan", async (req, res) => {
   const allBahan = await Bahan.find();
@@ -179,6 +185,18 @@ router.get("/master-bahan/report", async (req, res) => {
       error: err.message,
     });
   }
+});
+
+// reply the messages
+// bot.on("message", (msg) => {
+//   const chatId = msg.chat.id;
+//   bot.sendMessage(chatId, "Received your message");
+// });
+
+router.get("/telegram", (req, res) => {
+  const chatId = process.env.CHAT_ID;
+  bot.sendMessage(chatId, "Hello! I am a bot!");
+  res.send("Bot message sent");
 });
 
 export default router;

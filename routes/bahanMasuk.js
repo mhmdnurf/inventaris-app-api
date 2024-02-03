@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { BahanKeluar } from "../models/BahanKeluar.js";
+import { BahanMasuk } from "../models/BahanMasuk.js";
 import { Bahan } from "../models/Bahan.js";
 
 const router = express.Router();
@@ -9,7 +9,7 @@ router.use(cors());
 router.use(bodyParser.json());
 
 router.get("/bahan-masuk", async (req, res) => {
-  const allBahanMasuk = await BahanKeluar.find();
+  const allBahanMasuk = await BahanMasuk.find();
   try {
     res.status(200).json({
       message: "Berhasil mengambil data",
@@ -32,7 +32,7 @@ router.post("/bahan-masuk/create", async (req, res) => {
     });
   }
 
-  const addBahanMasuk = new BahanKeluar({
+  const addBahanMasuk = new BahanMasuk({
     bahan_id: bahan._id,
     namaBahan: bahan.namaBahan,
     satuan: bahan.satuan,
@@ -67,7 +67,7 @@ router.delete("/bahan-masuk/delete/:id", async (req, res) => {
     });
   }
 
-  const bahanMasuk = await BahanKeluar.findById(id);
+  const bahanMasuk = await BahanMasuk.findById(id);
   if (!bahanMasuk) {
     return res.status(404).json({
       message: "Bahan masuk not found",
@@ -80,8 +80,8 @@ router.delete("/bahan-masuk/delete/:id", async (req, res) => {
       $inc: { jumlah: -bahanMasuk.jumlahMasuk },
     });
 
-    // Delete the BahanKeluar document
-    await BahanKeluar.findByIdAndDelete(id);
+    // Delete the BahanMasuk document
+    await BahanMasuk.findByIdAndDelete(id);
 
     res.status(200).json({
       message: "Data berhasil dihapus",
